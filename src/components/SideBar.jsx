@@ -1,4 +1,13 @@
-export default function SideBar() {
+import { useSelector, useDispatch } from "react-redux";
+import { tasksAction } from "../store/taskSlice";
+
+export default function SideBar({ onAddProject }) {
+    const dispatch = useDispatch();
+    const projects = useSelector((state) => state.projects);
+    const selectedProjectId = useSelector((state) => state.selectedProjectId);
+
+    const activeProject = projects.find((p) => p.id === selectedProjectId);
+
     return (
         <div
             id="sidebar"
@@ -12,7 +21,10 @@ export default function SideBar() {
                 id="Create-Project"
                 className="border-b border-gray-400 p-4 text-center"
             >
-                <button className="w-full py-2 bg-gray-300 rounded-md hover:bg-gray-400">
+                <button
+                    onClick={onAddProject}
+                    className="w-full py-2 bg-gray-300 rounded-md hover:bg-gray-400"
+                >
                     Create Project
                 </button>
             </div>
@@ -21,9 +33,17 @@ export default function SideBar() {
                 <p className="font-medium mb-3">Projects:</p>
 
                 <ul className="space-y-3">
-                    <li className="p-3 bg-gray-300 rounded-xl"></li>
-                    <li className="p-3 bg-gray-300 rounded-xl"></li>
-                    <li className="p-3 bg-gray-300 rounded-xl"></li>
+                    {projects.map((project) => (
+                        <li
+                            key={project.id}
+                            onClick={() =>
+                                dispatch(tasksAction.selectProject(project.id))
+                            }
+                            className={`p-3 rounded-xl ${activeProject.id === project.id ? "bg-gray-400" : "bg-gray-300"}`}
+                        >
+                            {project.title}
+                        </li>
+                    ))}
                 </ul>
             </div>
 

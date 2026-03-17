@@ -1,6 +1,17 @@
+import { useState } from "react";
+import useFetchTask from "../../../hooks/useFetchTask";
 import ListRow from "./ListRow";
+import Modal from "../../ui/Modal";
+import TaskForm from "../../TaskForm";
 
 export default function ListView() {
+    const { todoTasks, inProgressTasks, completedTasks } = useFetchTask();
+
+    const [selectedTask, setSelectedTask] = useState(null);
+    function onCardClick(task) {
+        setSelectedTask(task);
+    }
+
     return (
         <div className="w-full pb-4 px-4 ">
             <div
@@ -13,12 +24,45 @@ export default function ListView() {
                 <div>Priority</div>
             </div>
 
-            <div id="listview" className="flex flex-col gap-6">
-                <ListRow id="todo-task" title="In Progress" count={1} />
+            <div id="listview" className="flex flex-col gap-4 pt-2">
+                {todoTasks.length > 0 && (
+                    <ListRow
+                        id="todo-task"
+                        title="Todo"
+                        tasks={todoTasks}
+                        onCardClick={onCardClick}
+                    />
+                )}
 
-                <ListRow id="in-progress-task" title="To Do" count={1} />
+                {inProgressTasks.length > 0 && (
+                    <ListRow
+                        id="in-progress-task"
+                        title="In Progress"
+                        tasks={inProgressTasks}
+                        onCardClick={onCardClick}
+                    />
+                )}
 
-                <ListRow id="completed-task" title="Completed" count={1} />
+                {completedTasks.length > 0 && (
+                    <ListRow
+                        id="completed-task"
+                        title="Completed"
+                        tasks={completedTasks}
+                        onCardClick={onCardClick}
+                    />
+                )}
+
+                <Modal
+                    isOpen={selectedTask}
+                    onClose={() => setSelectedTask(null)}
+                    modalWidth="min-w-2xl"
+                >
+                    <TaskForm
+                        key={selectedTask?.id || "new-task"}
+                        onClose={() => setSelectedTask(null)}
+                        task={selectedTask}
+                    />
+                </Modal>
             </div>
         </div>
     );
