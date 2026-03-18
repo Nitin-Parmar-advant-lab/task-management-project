@@ -18,6 +18,7 @@ export default function ProjectForm({ onClose }) {
             }),
         );
         dispatch(tasksAction.selectProject(newProjectId));
+        setTitle("");
         onClose();
     };
 

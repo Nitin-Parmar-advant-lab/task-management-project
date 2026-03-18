@@ -8,41 +8,50 @@ const taskSlice = createSlice({
             { id: "p2", title: "Learning", tasks: [] },
         ],
         selectedProjectId: "p1",
+        sortBy: "createdAt",
+        filter: {
+            category: "all",
+            priority: "all",
+            startDate: null,
+            endDate: null,
+        },
+        search: "",
     },
     reducers: {
         addProject(state, action) {
             state.projects.push({ ...action.payload, tasks: [] });
             localStorage.setItem("projects", JSON.stringify(state.projects));
         },
+
         selectProject(state, action) {
             state.selectedProjectId = action.payload;
         },
 
-        addTask(state, action) {
-            state.projects
-                .find((p) => p.id === state.selectedProjectId)
-                .tasks.push(action.payload);
-            localStorage.setItem("projects", JSON.stringify(state.projects));
-        },
-        deleteTask(state, action) {
-            const project = state.projects.find(
-                (p) => p.id === state.selectedProjectId,
+        deleteProject(state, action) {
+            state.projects = state.projects.filter(
+                (project) => project.id !== action.payload,
             );
-            if (project) {
-                project.tasks = project.tasks.filter(
-                    (t) => t.id !== action.payload,
-                );
+            if (state.selectedProjectId === action.payload) {
+                state.selectedProjectId = state.projects[0]?.id || null;
             }
             localStorage.setItem("projects", JSON.stringify(state.projects));
         },
+
+        addTask(state, action) {
+            state.projects
+                .find((project) => project.id === state.selectedProjectId)
+                .tasks.push({ ...action.payload, createdAt: new Date().toISOString() });
+            localStorage.setItem("projects", JSON.stringify(state.projects));
+        },
+
         updateTask(state, action) {
             const updatedTask = action.payload;
             const project = state.projects.find(
-                (p) => p.id === state.selectedProjectId,
+                (project) => project.id === state.selectedProjectId,
             );
             if (project) {
                 const taskIndex = project.tasks.findIndex(
-                    (t) => t.id === updatedTask.id,
+                    (task) => task.id === updatedTask.id,
                 );
                 if (taskIndex !== -1) {
                     project.tasks[taskIndex] = updatedTask;
@@ -50,15 +59,28 @@ const taskSlice = createSlice({
             }
             localStorage.setItem("projects", JSON.stringify(state.projects));
         },
-        updateTaskStatus(state, action) {
-            const { id, category } = action.payload;
+
+        setSort(state, action) {
+            state.sortBy = action.payload;
+        },
+
+        setFilter(state, action) {
+            state.filter = { ...state.filter, ...action.payload };
+        },
+
+        setSearch(state, action) {
+            state.search = action.payload;
+        },
+
+        moveTask(state, action) {
+            const { taskId, newCategory } = action.payload;
             const project = state.projects.find(
-                (p) => p.id === state.selectedProjectId,
+                (project) => project.id === state.selectedProjectId,
             );
             if (project) {
-                const task = project.tasks.find((t) => t.id === id);
+                const task = project.tasks.find((task) => task.id === taskId);
                 if (task) {
-                    task.category = category;
+                    task.category = newCategory;
                 }
             }
             localStorage.setItem("projects", JSON.stringify(state.projects));
@@ -69,4 +91,3 @@ const taskSlice = createSlice({
 export const tasksAction = taskSlice.actions;
 
 export default taskSlice.reducer;
-

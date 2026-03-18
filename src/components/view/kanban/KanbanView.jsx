@@ -5,7 +5,7 @@ import Modal from "../../ui/Modal";
 import TaskForm from "../../TaskForm";
 
 export default function KanbanView() {
-    const { todoTasks, inProgressTasks, completedTasks } = useFetchTask()
+    const { todoTasks, inProgressTasks, completedTasks } = useFetchTask();
 
     const [selectedTask, setSelectedTask] = useState(null);
     function onCardClick(task) {
@@ -18,15 +18,27 @@ export default function KanbanView() {
             className="flex gap-6 px-5 h-full overflow-x-auto p-2"
         >
             <div id="todo-task" className="flex-1 min-w-75">
-                <KanbanColumn title="Todo" tasks={todoTasks} onCardClick={onCardClick}/>
+                <KanbanColumn
+                    title="Todo"
+                    tasks={todoTasks}
+                    onCardClick={onCardClick}
+                />
             </div>
 
             <div id="in-progress-task" className="flex-1 min-w-75">
-                <KanbanColumn title="In Progress" tasks={inProgressTasks} onCardClick={onCardClick}/>
+                <KanbanColumn
+                    title="In Progress"
+                    tasks={inProgressTasks}
+                    onCardClick={onCardClick}
+                />
             </div>
 
             <div id="completed-task" className="flex-1 min-w-75">
-                <KanbanColumn title="Completed" tasks={completedTasks} onCardClick={onCardClick}/>
+                <KanbanColumn
+                    title="Completed"
+                    tasks={completedTasks}
+                    onCardClick={onCardClick}
+                />
             </div>
 
             <Modal

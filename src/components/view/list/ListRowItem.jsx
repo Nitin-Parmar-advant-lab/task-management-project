@@ -1,6 +1,6 @@
-import highPriority from "../../../../public/high-priority.svg";
-import mediumPriority from "../../../../public/medium-priority.svg";
-import lowPriority from "../../../../public/low-priority.svg";
+import highPriority from "../../assets/high-priority.svg";
+import mediumPriority from "../../assets/medium-priority.svg";
+import lowPriority from "../../assets/low-priority.svg";
 
 export default function ListRowItem({ task, onCardClick }) {
     const priorityIcons = {

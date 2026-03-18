@@ -17,10 +17,23 @@ export default function TaskForm({ onClose, task }) {
     const [formData, setFormData] = useState(task || INITIAL_TASK);
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
+        if(e.target.name === "dueDate") {
+            const selectedDate = new Date(e.target.value);
+            const today = new Date();
+            if(selectedDate <= today) {
+                alert("Due date cannot be in the past");
+                return;
+            }
+            setFormData({
+                ...formData,
+                dueDate: e.target.value,
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [e.target.name]: e.target.value,
+            });
+        }
     };
 
     const handleSubmit = (e) => {
@@ -55,7 +68,7 @@ export default function TaskForm({ onClose, task }) {
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
                 <input
-                    className="h-8 px-2 outline-gray-400 rounded-md"
+                    className="h-10 px-2 bg-gray-100 border-gray-200 outline-gray-400 rounded-md"
                     type="text"
                     name="title"
                     placeholder="Task Title"
@@ -64,7 +77,7 @@ export default function TaskForm({ onClose, task }) {
                     required
                 />
                 <textarea
-                    className="py-1 px-2 outline-gray-400 rounded-md"
+                    className="py-1 px-2 bg-gray-100 border-gray-200 outline-gray-400 rounded-md"
                     name="description"
                     placeholder="Task Description"
                     value={formData.description}

@@ -5,7 +5,6 @@ import { addTask } from '../store/taskSlice';
 export default function TaskForm() {
   const dispatch = useDispatch();
   
-  // Local state to handle form inputs
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -14,7 +13,6 @@ export default function TaskForm() {
     dueDate: '',
   });
 
-  // Update state as user types
   const handleChange = (e) => {
     setFormData({ 
       ...formData, 
@@ -22,21 +20,17 @@ export default function TaskForm() {
     });
   };
 
-  // Handle the submission
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Assemble the final task object with an ID and a default Kanban status
     const newTask = {
       ...formData,
-      id: crypto.randomUUID(), // Generates a unique ID instantly
-      status: 'Todo', // Every new task starts in the "Todo" column
+      id: crypto.randomUUID(),
+      status: 'Todo', 
     };
 
-    // Send it to Redux!
     dispatch(addTask(newTask));
     
-    // Reset the form so it's ready for the next task
     setFormData({
       title: '',
       description: '',
