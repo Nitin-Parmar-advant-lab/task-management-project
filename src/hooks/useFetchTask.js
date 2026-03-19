@@ -1,11 +1,12 @@
 import { useSelector } from "react-redux";
 
 export default function useFetchTask() {
-    const selectedProjectId = useSelector((state) => state.selectedProjectId);
-    const projects = useSelector((state) => state.projects);
-    const sortBy = useSelector((state) => state.sortBy);
-    const filter = useSelector((state) => state.filter);
-    const search = useSelector((state) => state.search);
+    const selectedProjectId = useSelector((state) => state.tasks.selectedProjectId);
+    
+    const projects = useSelector((state) => state.tasks.projects);
+    const sortBy = useSelector((state) => state.tasks.sortBy);
+    const filter = useSelector((state) => state.tasks.filter);
+    const search = useSelector((state) => state.tasks.search);
 
     const activeProject = projects.find((p) => p.id === selectedProjectId);
     const rawTasks = activeProject?.tasks || [];

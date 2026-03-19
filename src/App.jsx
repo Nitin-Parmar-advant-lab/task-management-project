@@ -1,62 +1,43 @@
-import { useState } from "react";
+import {
+    Navigate,
+    RouterProvider,
+    createBrowserRouter,
+} from "react-router-dom";
+import DashboardPage from "./pages/DashboardPage";
+import LoginPage from "./pages/LoginPage";
 import { useSelector } from "react-redux";
-import SideBar from "./components/SideBar";
-import TopBar from "./components/TopBar";
-import KanbanView from "./components/view/kanban/KanbanView";
-import ListView from "./components/view/list/ListView";
-import Modal from "./components/ui/Modal";
-import TaskForm from "./components/TaskForm";
-import ProjectForm from "./components/ProjectForm";
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <DashboardPage />,
+    },
+    {
+        path: "/login",
+        element: <LoginPage />,
+    },
+    {
+        path: "*",
+        element: <Navigate to="/" />,
+    },
+]);
+
+import { useEffect } from "react";
 
 export default function App() {
-    const [view, setView] = useState("kanban");
-    const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-    const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+    const isDarkMode = useSelector((state) => state.ui.isDarkMode);
 
-    const selectedProjectId = useSelector((state) => state.selectedProjectId);
-    const projects = useSelector((state) => state.projects);
-    const selectedProject = projects.find((p) => p.id === selectedProjectId);
-
-    function handleCreateTaskModal() {
-        setIsTaskModalOpen((prevs) => !prevs);
-    }
+    useEffect(() => {
+        if (isDarkMode) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+    }, [isDarkMode]);
 
     return (
-        <div className="flex h-screen overflow-hidden">
-            <SideBar onAddProject={() => setIsProjectModalOpen(true)} />
-            <Modal
-                isOpen={isProjectModalOpen}
-                onClose={() => setIsProjectModalOpen(false)}
-                modalWidth="min-w-sm"
-            >
-                <ProjectForm onClose={() => setIsProjectModalOpen(false)} />
-            </Modal>
-            <div
-                id="main-section"
-                className="flex-1 flex flex-col overflow-hidden"
-            >
-                <TopBar
-                    setCreateTaskModal={handleCreateTaskModal}
-                    currentView={view}
-                    onViewChange={setView}
-                    projectTitle={selectedProject?.title || "Select a Project"}
-                />
-
-                <div className="flex-1 overflow-y-auto ">
-                    {view === "kanban" ? <KanbanView /> : <ListView />}
-                </div>
-
-                <Modal
-                    isOpen={isTaskModalOpen}
-                    onClose={() => setIsTaskModalOpen(false)}
-                    modalWidth="min-w-2xl"
-                >
-                    <TaskForm
-                        key="create-task"
-                        onClose={handleCreateTaskModal}
-                    />
-                </Modal>
-            </div>
+        <div>
+            <RouterProvider router={router} />
         </div>
     );
 }

@@ -12,7 +12,7 @@ const INITIAL_TASK = {
 
 export default function TaskForm({ onClose, task }) {
     const dispatch = useDispatch();
-    const selectedProjectId = useSelector((state) => state.selectedProjectId);
+    const selectedProjectId = useSelector((state) => state.tasks.selectedProjectId);
 
     const [formData, setFormData] = useState(task || INITIAL_TASK);
 
@@ -85,8 +85,9 @@ export default function TaskForm({ onClose, task }) {
                     rows={4}
                     required
                 />
+
                 <div className="flex justify-between items-center px-5 ">
-                    <div>
+                    <div id="priority">
                         <label htmlFor="priority">Priority :</label>
                         <select
                             className="outline-none"
@@ -104,7 +105,7 @@ export default function TaskForm({ onClose, task }) {
                             <option value="low">Low</option>
                         </select>
                     </div>
-                    <div>
+                    <div id="category">
                         <label htmlFor="category">Category :</label>
                         <select
                             className="outline-none"
@@ -119,7 +120,7 @@ export default function TaskForm({ onClose, task }) {
                             <option value="Completed">Completed</option>
                         </select>
                     </div>
-                    <div>
+                    <div id="dueDate">
                         <label htmlFor="dueDate">Due date :</label>
                         <input
                             id="dueDate"
@@ -131,11 +132,12 @@ export default function TaskForm({ onClose, task }) {
                         />
                     </div>
                 </div>
+
                 <div className="flex items-center justify-between gap-8 px-8">
                     <button
                         type="button"
                         onClick={onClose}
-                        className="p-4 border-none w-1/2 cursor-pointer rounded-md bg-amber-100"
+                        className="p-4 border-none w-1/2 cursor-pointer rounded-md bg-amber-100 dark:bg-amber-800"
                     >
                         Cancel
                     </button>
@@ -146,6 +148,7 @@ export default function TaskForm({ onClose, task }) {
                         {task ? "Update Task" : "Save Task"}
                     </button>
                 </div>
+                
             </form>
         </div>
     );

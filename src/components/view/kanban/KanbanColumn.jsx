@@ -1,11 +1,21 @@
 import TaskCard from "./TaskCard";
+import { useDroppable } from "@dnd-kit/core";
 
-export default function KanbanCol({ title, tasks, onCardClick }) {
+
+export default function KanbanColumn({ id, title, tasks, onCardClick }) {
+    const { setNodeRef, isOver } = useDroppable({
+        id: id,
+    });
+
+    const bgClass = isOver ? "bg-gray-300 dark:bg-gray-800" : "bg-gray-200 dark:bg-gray-900";
+
     return (
-        <div className="bg-gray-200 rounded-xl p-4 h-full flex flex-col">
-            <p className="text-lg font-normal mb-4 text-center">
-                {title}
-                <span>({tasks.length})</span>
+        <div
+            ref={setNodeRef}
+            className={`${bgClass} rounded-xl p-4 h-full flex flex-col transition-colors duration-200`}
+        >
+            <p className="text-lg font-normal mb-4 text-center dark:text-white">
+                {title} <span className="text-gray-500 dark:text-gray-400">({tasks.length})</span>
             </p>
 
             <div className="flex flex-col gap-4 overflow-y-auto no-scrollbar">

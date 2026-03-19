@@ -15,8 +15,8 @@ export default function ListView() {
     return (
         <div className="w-full pb-4 px-4 ">
             <div
-                className="pl-5 grid grid-cols-[1fr_4fr_.5fr_.2fr] text-sm font-semibold border-b px-3 py-3 
-                sticky top-0 bg-white z-30"
+                className="pl-5 grid grid-cols-[1fr_4fr_.5fr_.2fr] text-xs font-semibold uppercase tracking-wider text-[#86868B] border-b border-[#E8E8ED] px-3 py-3 
+                sticky top-0 bg-[#F5F5F7]/95 backdrop-blur-md dark:bg-[#000000]/95 dark:text-gray-400 z-30"
             >
                 <div>Title</div>
                 <div>Description</div>
