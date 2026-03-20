@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 import SideBar from "../components/SideBar";
 import TopBar from "../components/TopBar";
 import KanbanView from "../components/view/kanban/KanbanView";
@@ -7,43 +8,44 @@ import ListView from "../components/view/list/ListView";
 import Modal from "../components/ui/Modal";
 import TaskForm from "../components/TaskForm";
 import ProjectForm from "../components/ProjectForm";
-import LoginModal from "../components/LoginModal";
+import { uiActions } from "../store/uiSlice";
 
 export default function DashboardPage() {
-    const [view, setView] = useState("kanban");
+    const isVerified = useSelector((state) => state.auth.isVerified);
+    const view = useSelector((state) => state.ui.view);
+    const dispatch = useDispatch();
+
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
     const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
 
     const selectedProjectId = useSelector(
         (state) => state.tasks.selectedProjectId,
     );
     const projects = useSelector((state) => state.tasks.projects);
-    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
     const selectedProject = projects.find((p) => p.id === selectedProjectId);
 
     function handleCreateTaskModal() {
-        if (isLoggedIn) {
-            setIsTaskModalOpen((prevs) => !prevs);
-        } else {
-            setIsLoginModalOpen(true);
-        }
+        setIsTaskModalOpen((prevs) => !prevs);
+    }
+    
+    if (!isVerified) {
+        return <Navigate to="/login" />;
     }
 
     return (
-        <div className="flex h-screen overflow-hidden">
+        <div className="flex h-screen overflow-hidden bg-[#F5F5F7] dark:bg-[#000000]">
             <SideBar
                 onAddProject={() => setIsProjectModalOpen(true)}
-                onShowLoginModal={() => setIsLoginModalOpen(true)}
             />
             <Modal
                 isOpen={isProjectModalOpen}
                 onClose={() => setIsProjectModalOpen(false)}
-                modalWidth="min-w-sm"
+                modalWidth="w-[95%] max-w-md"
             >
                 <ProjectForm onClose={() => setIsProjectModalOpen(false)} />
             </Modal>
-            
+
             <div
                 id="main-section"
                 className="flex-1 flex flex-col overflow-hidden"
@@ -51,7 +53,7 @@ export default function DashboardPage() {
                 <TopBar
                     setCreateTaskModal={handleCreateTaskModal}
                     currentView={view}
-                    onViewChange={setView}
+                    onViewChange={(newView) => dispatch(uiActions.setView(newView))}
                     projectTitle={selectedProject?.title || "Select a Project"}
                 />
 
@@ -62,20 +64,12 @@ export default function DashboardPage() {
                 <Modal
                     isOpen={isTaskModalOpen}
                     onClose={() => setIsTaskModalOpen(false)}
-                    modalWidth="min-w-2xl"
+                    modalWidth="w-[95%] sm:w-[85%] md:w-[80%] lg:max-w-2xl"
                 >
                     <TaskForm
                         key="create-task"
                         onClose={() => setIsTaskModalOpen(false)}
                     />
-                </Modal>
-
-                <Modal
-                    isOpen={isLoginModalOpen}
-                    onClose={() => setIsLoginModalOpen(false)}
-                    modalWidth="max-w-md"
-                >
-                    <LoginModal onClose={() => setIsLoginModalOpen(false)} />
                 </Modal>
             </div>
         </div>

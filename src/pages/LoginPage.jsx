@@ -13,9 +13,9 @@ export default function LoginPage() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+    const isVerified = useSelector((state) => state.auth.isVerified);
 
-    if (isLoggedIn) {
+    if (isVerified) {
         return <Navigate to="/" />;
     }
 
@@ -24,7 +24,7 @@ export default function LoginPage() {
         setLoginData((prev) => ({
             ...prev,
             [name]: value,
-            error: "", 
+            error: "",
         }));
     }
 
@@ -50,50 +50,50 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#e8e8ed] dark:bg-[#161617] py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-sm w-full space-y-8 p-8 bg-[#f5f5f7] dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+        <div className="min-h-screen flex items-center justify-center bg-[#F5F5F7] dark:bg-[#000000] py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-500">
+            <div className="max-w-md w-full space-y-8 p-8 bg-[#FFFFFF] dark:bg-[#161617] rounded-3xl shadow-2xl border border-[#E8E8ED] dark:border-[#2D2D2F]">
                 <div>
-                    <h2 className="text-center text-2xl font-bold text-gray-900 dark:text-white">
+                    <h2 className="text-center text-3xl font-bold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight">
                         Sign in
                     </h2>
                 </div>
 
-                <form className="space-y-4" onSubmit={handleSubmit}>
-                    <div className="space-y-3">
-                        <div>
+                <form className="space-y-6" onSubmit={handleSubmit}>
+                    <div className="space-y-4">
+                        <div className="group">
                             <input
                                 type="email"
                                 name="email"
                                 required
                                 value={loginData.email}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                className="w-full px-4 py-3 bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] placeholder-[#A1A1A6] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl outline-none focus:ring-2 focus:ring-[#0066CC]/20 transition-all font-medium"
                                 placeholder="Email address"
                             />
                         </div>
-                        <div>
+                        <div className="group">
                             <input
                                 type="password"
                                 name="password"
                                 required
                                 value={loginData.password}
                                 onChange={handleChange}
-                                className="w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                className="w-full px-4 py-3 bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] placeholder-[#A1A1A6] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl outline-none focus:ring-2 focus:ring-[#0066CC]/20 transition-all font-medium"
                                 placeholder="Password"
                             />
                         </div>
                     </div>
-                    <div>
-                        {loginData.error && (
-                            <div className=" text-red-600 text-sm ">
-                                {loginData.error}
-                            </div>
-                        )}
-                    </div>
+
+                    {loginData.error && (
+                        <div className="text-[#D70015] dark:text-[#FF453A] text-xs font-bold uppercase tracking-wide text-center">
+                            {loginData.error}
+                        </div>
+                    )}
+
                     <div>
                         <button
                             type="submit"
-                            className="w-full flex justify-center py-2 px-4 text-sm font-medium rounded-md text-white bg-[#1d1d1f] hover:bg-[#2d2d2f] cursor-pointer"
+                            className="w-full flex justify-center py-3 px-4 text-sm font-bold rounded-xl text-white bg-[#0066CC] hover:bg-[#0071E3] dark:bg-[#2997FF] dark:hover:bg-[#5AC8FA] transition-all shadow-lg shadow-[#0066CC] cursor-pointer"
                         >
                             Sign in
                         </button>

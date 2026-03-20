@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialAuthState = {
-    isLoggedIn: JSON.parse(localStorage.getItem("isLoggedIn")) || false,
+    isVerified: JSON.parse(localStorage.getItem("isVerified")) || false,
     user: JSON.parse(localStorage.getItem("user")) || null,
 };
 
@@ -10,15 +10,15 @@ const authSlice = createSlice({
     initialState: initialAuthState,
     reducers: {
         login(state, action) {
-            state.isLoggedIn = true;
+            state.isVerified = true;
             state.user = action.payload;
-            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("isVerified", "true");
             localStorage.setItem("user", JSON.stringify(action.payload));
         },
         logout(state) {
-            state.isLoggedIn = false;
+            state.isVerified = false;
             state.user = null;
-            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("isVerified");
             localStorage.removeItem("user");
         },
     },

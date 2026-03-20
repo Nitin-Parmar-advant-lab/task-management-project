@@ -1,6 +1,6 @@
 export default function RelativeModal({ texts, onClick, selectedValue }) {
     return (
-        <div className="absolute top-0 ml-22 -mt-4 w-30 bg-white border border-gray-200 rounded-xl shadow-lg z-50 ">
+        <div className="absolute top-0 ml-22 -mt-4 w-30 bg-white border border-gray-200 rounded-xl shadow-lg z-100 ">
             {texts.map((text, index) => (
                 <button
                     key={index}

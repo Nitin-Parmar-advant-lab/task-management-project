@@ -1,6 +1,6 @@
-import highPriority from "../../assets/high-priority.svg";
-import mediumPriority from "../../assets/medium-priority.svg";
-import lowPriority from "../../assets/low-priority.svg";
+import highPriority from "../../../assets/high-priority.svg";
+import mediumPriority from "../../../assets/medium-priority.svg";
+import lowPriority from "../../../assets/low-priority.svg";
 
 export default function ListRowItem({ task, onCardClick }) {
     const priorityIcons = {
@@ -22,14 +22,47 @@ export default function ListRowItem({ task, onCardClick }) {
     return (
         <div
             onClick={() => onCardClick(task)}
-            className="grid grid-cols-[1fr_4fr_.5fr_.2fr] border p-3 rounded hover:bg-gray-50 cursor-pointer"
+            className="flex flex-col md:grid md:grid-cols-[1.5fr_3fr_1fr_0.5fr] md:items-center bg-[#FFFFFF] dark:bg-[#161617] border border-[#E8E8ED] dark:border-[#2D2D2F] p-4 md:px-6 md:py-4 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer gap-2 md:gap-4 hover:scale-[1.01] active:scale-[0.99]"
         >
-            <div className="line-clamp-1">{task.title}</div>
-            <div className="line-clamp-1">{task.description}</div>
-            <div>{formattedDate}</div>
-            <div>
+            <div className="flex items-center justify-between md:contents">
+                <div className="font-bold text-[#1D1D1F] dark:text-[#F5F5F7] line-clamp-1 md:font-medium">
+                    {task.title}
+                </div>
+
+                <div className="md:hidden">
+                    {prioritySvg && (
+                        <img
+                            src={prioritySvg}
+                            alt="Priority"
+                            className="w-4 h-4"
+                        />
+                    )}
+                </div>
+            </div>
+
+            <div className="text-sm text-[#86868B] dark:text-[#A1A1A6] line-clamp-2 md:line-clamp-1 font-medium">
+                {task.description}
+            </div>
+
+            <div className="text-[10px] md:text-xs text-[#A1A1A6] dark:text-[#6E6E73] md:text-center font-semibold">
+                {formattedDate ? (
+                    <>
+                        <span className="md:hidden opacity-50">DUE: </span>
+                        {formattedDate}
+                    </>
+                ) : (
+                    ""
+                )}
+            </div>
+
+
+            <div className="hidden md:flex justify-end pr-2">
                 {prioritySvg ? (
-                    <img src={prioritySvg} alt="Priority" className="w-4" />
+                    <img
+                        src={prioritySvg}
+                        alt="Priority"
+                        className="w-4 h-4 opacity-80"
+                    />
                 ) : (
                     <span />
                 )}

@@ -13,18 +13,18 @@ export default function ListView() {
     }
 
     return (
-        <div className="w-full pb-4 px-4 ">
+        <div className="w-full pb-4 px-2 md:px-4">
             <div
-                className="pl-5 grid grid-cols-[1fr_4fr_.5fr_.2fr] text-xs font-semibold uppercase tracking-wider text-[#86868B] border-b border-[#E8E8ED] px-3 py-3 
-                sticky top-0 bg-[#F5F5F7]/95 backdrop-blur-md dark:bg-[#000000]/95 dark:text-gray-400 z-30"
+                className="hidden md:grid grid-cols-[1.5fr_3fr_1fr_0.5fr] text-[10px] font-bold uppercase tracking-widest text-[#86868B] dark:text-[#A1A1A6] px-6 py-4 
+                sticky top-0 bg-[#F5F5F7]/95 dark:bg-[#000000]/95 backdrop-blur-md z-10 border-b border-[#E8E8ED] dark:border-[#2D2D2F]"
             >
                 <div>Title</div>
                 <div>Description</div>
-                <div>Due Date</div>
-                <div>Priority</div>
+                <div className="text-center">Due Date</div>
+                <div className="text-right">Priority</div>
             </div>
 
-            <div id="listview" className="flex flex-col gap-4 pt-2">
+            <div id="listview" className="flex flex-col gap-6 pt-4">
                 {todoTasks.length > 0 && (
                     <ListRow
                         id="todo-task"
@@ -55,7 +55,7 @@ export default function ListView() {
                 <Modal
                     isOpen={selectedTask}
                     onClose={() => setSelectedTask(null)}
-                    modalWidth="min-w-2xl"
+                    modalWidth="w-[95%] sm:w-[85%] md:w-[80%] lg:max-w-2xl"
                 >
                     <TaskForm
                         key={selectedTask?.id || "new-task"}

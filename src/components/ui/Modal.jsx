@@ -18,9 +18,9 @@ export default function Modal({ isOpen, onClose, children, modalWidth }) {
         <dialog
             ref={dialogRef}
             onClose={onClose}
-            className="m-auto rounded-3xl shadow-2xl backdrop:bg-black/40 border-none overflow-hidden backdrop:backdrop-blur-md outline-none"
+            className={`m-auto rounded-3xl shadow-2xl backdrop:bg-black/40 border-none overflow-hidden backdrop:backdrop-blur-sm outline-none ${modalWidth}`}
         >
-            <div className={`bg-white dark:bg-gray-900 p-8 w-full ${modalWidth}`}>
+            <div className={`bg-[#FFFFFF] dark:bg-[#161617] p-6 md:p-8 w-full`}>
                 {children}
             </div>
         </dialog>,

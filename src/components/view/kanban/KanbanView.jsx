@@ -11,9 +11,8 @@ import {
     closestCorners,
     DragOverlay,
 } from "@dnd-kit/core";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { tasksAction } from "../../../store/taskSlice";
-import LoginModal from "../../LoginModal";
 import TaskCard from "./TaskCard";
 
 export default function KanbanView() {
@@ -22,8 +21,6 @@ export default function KanbanView() {
     const [selectedTask, setSelectedTask] = useState(null);
     const [activeId, setActiveId] = useState(null);
 
-    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     const allTasks = [...todoTasks, ...inProgressTasks, ...completedTasks];
     const activeTask = allTasks.find((t) => t.id === activeId);
@@ -37,24 +34,14 @@ export default function KanbanView() {
     );
 
     function onCardClick(task) {
-        if (isLoggedIn) {
-            setSelectedTask(task);
-        } else {
-            setIsLoginModalOpen(true);
-        }
+        setSelectedTask(task);
     }
 
     function handleDragStart(event) {
-        if (!isLoggedIn) {
-            setIsLoginModalOpen(true);
-            return;
-        }
         setActiveId(event.active.id);
     }
 
     function handleDragOver(event) {
-        if (!isLoggedIn) return;
-
         const { active, over } = event;
         if (!over) return;
 
@@ -75,9 +62,7 @@ export default function KanbanView() {
 
     function handleDragEnd(event) {
         setActiveId(null);
-        if (!isLoggedIn) {
-            return;
-        }
+
 
         const { active, over } = event;
 
@@ -108,7 +93,7 @@ export default function KanbanView() {
         >
             <div
                 id="kanban-view"
-                className="flex gap-6 px-5 h-full overflow-x-auto p-2 dark:bg-[#000000] bg-amber-100"
+                className="flex gap-6 px-5 h-full overflow-x-auto p-4 bg-[#F5F5F7] dark:bg-[#000000]"
             >
                 <div id="todo-task" className="flex-1 min-w-75">
                     <KanbanColumn
@@ -156,13 +141,6 @@ export default function KanbanView() {
                     onClose={() => setSelectedTask(null)}
                     task={selectedTask}
                 />
-            </Modal>
-            <Modal
-                isOpen={isLoginModalOpen}
-                onClose={() => setIsLoginModalOpen(false)}
-                modalWidth="max-w-md"
-            >
-                <LoginModal onClose={() => setIsLoginModalOpen(false)} />
             </Modal>
         </DndContext>
     );

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { tasksAction } from "../store/taskSlice";
+import closeIcon from "../assets/close-taggle-icon.svg"
 
 const formatDateForInput = (dateString) => {
     if (!dateString) return "";
@@ -56,15 +57,17 @@ export default function DateRangeForm({ onClose }) {
     return (
         <div
             id="date-range-form"
-            className="flex flex-col items-center gap-4 p-2 min-w-87"
+            className="flex flex-col items-center gap-2 p-1 min-w-87 relative"
         >
-            <h3 className="text-xl font-medium text-gray-800 mb-2">
-                Filter Tasks by Date
+            <h3 className="text-xl font-bold text-[#1D1D1F] dark:text-[#F5F5F7] mb-2 tracking-tight">
+                Filter by Date
             </h3>
 
+            <img src={closeIcon} alt="close" onClick={onClose} className="absolute w-5 -top-2 -right-2 cursor-pointer"/>
+
             <div className="flex w-full gap-4">
-                <div className="flex-1 flex flex-col gap-1">
-                    <label className="text-sm font-medium text-gray-600">Start Date</label>
+                <div className="flex-1 flex flex-col gap-1.5 text-center">
+                    <label className="text-xs font-bold uppercase tracking-widest text-[#86868B] dark:text-[#A1A1A6]">Start</label>
                     <input
                         type="date"
                         value={range.from}
@@ -72,12 +75,12 @@ export default function DateRangeForm({ onClose }) {
                             setRange((prev) => ({ ...prev, from: e.target.value }));
                             if (e.target.value && range.to) setError("");
                         }}
-                        className="border border-gray-300 rounded-lg p-2"
+                        className="bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl p-2 outline-none focus:ring-2 focus:ring-[#0066CC] transition-all font-medium text-sm"
                     />
                 </div>
 
-                <div className="flex-1 flex flex-col gap-1">
-                    <label className="text-sm font-medium text-gray-600">End Date</label>
+                <div className="flex-1 flex flex-col gap-1.5 text-center">
+                    <label className="text-xs font-bold uppercase tracking-widest text-[#86868B] dark:text-[#A1A1A6]">End</label>
                     <input
                         type="date"
                         value={range.to}
@@ -86,33 +89,33 @@ export default function DateRangeForm({ onClose }) {
                             setRange((prev) => ({ ...prev, to: e.target.value }));
                             if (range.from && e.target.value) setError("");
                         }}
-                        className="border border-gray-300 rounded-lg p-2"
+                        className="bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl p-2 outline-none focus:ring-2 focus:ring-[#0066CC] transition-all font-medium text-sm"
                     />
                 </div>
             </div>
 
             {error && (
-                <p className="text-sm font-medium mt-2">
+                <p className="text-xs font-bold text-[#D70015] dark:text-[#FF453A] mt-2 uppercase tracking-wide">
                     {error}
                 </p>
             )}
 
-            <div className="flex flex-wrap justify-between w-full gap-3 mt-4">
-                <button
+            <div className="flex flex-row justify-between w-full gap-3 mt-4">
+                {/* <button
                     onClick={onClose}
-                    className="flex-1 py-2.5 px-4 border border-gray-300 hover:bg-gray-50 rounded-xl font-medium text-gray-600 cursor-pointer "
+                    className="flex-1 py-3 px-4 bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl font-bold text-sm tracking-tight cursor-pointer hover:bg-[#E8E8ED] dark:hover:bg-[#2D2D2F] transition-all shadow-sm "
                 >
                     Cancel
-                </button>
+                </button> */}
                 <button
                     onClick={handleReset}
-                    className="flex-1 py-2.5 px-4 bg-gray-100  text-gray-700 rounded-xl font-medium cursor-pointer "
+                    className="flex-1 py-3 px-4 bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl font-bold text-sm tracking-tight cursor-pointer hover:bg-[#E8E8ED] dark:hover:bg-[#2D2D2F] transition-all shadow-sm "
                 >
                     Reset
                 </button>
                 <button
                     onClick={handleApply}
-                    className="flex-2 py-2.5 px-4 bg-amber-200 rounded-xl font-medium cursor-pointer"
+                    className="flex-1 py-3 px-4 bg-[#0066CC] dark:bg-[#2997FF] hover:bg-[#0071E3] dark:hover:bg-[#5AC8FA] text-white rounded-xl font-bold text-sm tracking-tight cursor-pointer transition-all shadow-lg"
                 >
                     Apply Filter
                 </button>

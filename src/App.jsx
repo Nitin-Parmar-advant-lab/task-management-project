@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import {
     Navigate,
     RouterProvider,
@@ -21,8 +23,6 @@ const router = createBrowserRouter([
         element: <Navigate to="/" />,
     },
 ]);
-
-import { useEffect } from "react";
 
 export default function App() {
     const isDarkMode = useSelector((state) => state.ui.isDarkMode);

@@ -5,7 +5,7 @@ import { tasksAction } from "../store/taskSlice";
 const INITIAL_TASK = {
     title: "",
     description: "",
-    priority: "",
+    priority: "no-priority",
     category: "Todo",
     dueDate: "",
 };
@@ -45,8 +45,6 @@ export default function TaskForm({ onClose, task }) {
             projectId: selectedProjectId,
         };
 
-        console.log(newTask);
-
         dispatch(
             task?.id
                 ? tasksAction.updateTask(newTask)
@@ -54,21 +52,20 @@ export default function TaskForm({ onClose, task }) {
         );
 
         setFormData(INITIAL_TASK);
-
         if (onClose) onClose();
     };
 
     return (
-        <div className="w-full max-w-2xl ">
-            <div className="flex items-center justify-betw  een mb-6">
-                <h3 className="text-xl text-gray-800 m-0">
+        <div className="w-full">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
+                <h3 className="text-xl text-[#1D1D1F] dark:text-[#F5F5F7] m-0 font-semibold">
                     {task ? "Update Task" : "Create New Task"}
                 </h3>
             </div>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <input
-                    className="h-10 px-2 bg-gray-100 border-gray-200 outline-gray-400 rounded-md"
+                    className="h-10 px-3 bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] placeholder-[#A1A1A6] outline-none focus:ring-2 focus:ring-[#0066CC]/20 rounded-xl w-full transition-all"
                     type="text"
                     name="title"
                     placeholder="Task Title"
@@ -77,7 +74,7 @@ export default function TaskForm({ onClose, task }) {
                     required
                 />
                 <textarea
-                    className="py-1 px-2 bg-gray-100 border-gray-200 outline-gray-400 rounded-md"
+                    className="py-2 px-3 bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] placeholder-[#A1A1A6] outline-none focus:ring-2 focus:ring-[#0066CC]/20 rounded-xl w-full resize-none transition-all"
                     name="description"
                     placeholder="Task Description"
                     value={formData.description}
@@ -86,29 +83,28 @@ export default function TaskForm({ onClose, task }) {
                     required
                 />
 
-                <div className="flex justify-between items-center px-5 ">
-                    <div id="priority">
-                        <label htmlFor="priority">Priority :</label>
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-2 px-1 md:px-1">
+                    <div id="priority" className="flex flex-col md:flex-row md:items-center gap-1 md:gap-1.5 w-full md:w-auto">
+                        <label htmlFor="priority" className="text-xs font-semibold uppercase text-[#86868B] dark:text-[#A1A1A6] whitespace-nowrap shrink-0">Priority</label>
                         <select
-                            className="outline-none"
+                            className="outline-none bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-lg px-2 py-1 w-full md:w-auto focus:ring-2 focus:ring-[#0066CC]/20 transition-all cursor-pointer"
                             name="priority"
                             id="priority"
                             value={formData.priority}
                             onChange={handleChange}
                             required
                         >
-                            <option value="no-priority" defaultChecked>
-                                Priority
-                            </option>
+                            <option value="no-priority">Select Priority</option>
                             <option value="high">High</option>
                             <option value="medium">Medium</option>
                             <option value="low">Low</option>
                         </select>
                     </div>
-                    <div id="category">
-                        <label htmlFor="category">Category :</label>
+                    
+                    <div id="category" className="flex flex-col md:flex-row md:items-center gap-1 md:gap-1.5 w-full md:w-auto">
+                        <label htmlFor="category" className="text-xs font-semibold uppercase text-[#86868B] dark:text-[#A1A1A6] whitespace-nowrap shrink-0">Category</label>
                         <select
-                            className="outline-none"
+                            className="outline-none bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-lg px-2 py-1 w-full md:w-auto focus:ring-2 focus:ring-[#0066CC]/20 transition-all cursor-pointer"
                             name="category"
                             id="category"
                             value={formData.category}
@@ -120,11 +116,12 @@ export default function TaskForm({ onClose, task }) {
                             <option value="Completed">Completed</option>
                         </select>
                     </div>
-                    <div id="dueDate">
-                        <label htmlFor="dueDate">Due date :</label>
+                    
+                    <div id="dueDate" className="flex flex-col md:flex-row md:items-center gap-1 md:gap-1.5 w-full md:w-auto">
+                        <label htmlFor="dueDate" className="text-xs font-semibold uppercase text-[#86868B] dark:text-[#A1A1A6] whitespace-nowrap shrink-0">Due Date</label>
                         <input
                             id="dueDate"
-                            className="outline-gray-400 rounded-md px-2 py-1"
+                            className="outline-none bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-lg px-2 py-1 w-full md:w-auto focus:ring-2 focus:ring-[#0066CC]/20 transition-all cursor-pointer"
                             type="date"
                             name="dueDate"
                             value={formData.dueDate}
@@ -133,22 +130,21 @@ export default function TaskForm({ onClose, task }) {
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between gap-8 px-8">
+                <div className="flex items-center justify-between gap-4 px-1 mt-6">
                     <button
                         type="button"
                         onClick={onClose}
-                        className="p-4 border-none w-1/2 cursor-pointer rounded-md bg-amber-100 dark:bg-amber-800"
+                        className="py-3 w-1/2 cursor-pointer rounded-xl bg-[#F5F5F7] hover:bg-[#E8E8ED] dark:bg-[#1D1D1F] dark:hover:bg-[#2D2D2F] transition-all font-semibold text-[#1D1D1F] dark:text-[#F5F5F7] shadow-sm"
                     >
                         Cancel
                     </button>
                     <button
                         type="submit"
-                        className="p-4 border-none w-1/2 cursor-pointer rounded-md bg-amber-100"
+                        className="py-3 w-1/2 cursor-pointer rounded-xl bg-[#0066CC] hover:bg-[#0071E3] dark:bg-[#2997FF] dark:hover:bg-[#5AC8FA] transition-all font-semibold text-white shadow-lg shadow-[#0066CC]/20"
                     >
                         {task ? "Update Task" : "Save Task"}
                     </button>
                 </div>
-                
             </form>
         </div>
     );
