@@ -3,7 +3,7 @@ import {
     RouterProvider,
     createBrowserRouter,
 } from "react-router-dom";
-import DashboardPage from "./pages/DashboardPage";
+import DashboardPage from "./pages/DashboardPage.jsx";
 import LoginPage from "./pages/LoginPage";
 import { useSelector } from "react-redux";
 
