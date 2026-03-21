@@ -31,9 +31,23 @@ export default function LoginPage() {
         if (error) setError("");
     };
 
+    const USER = [
+        {
+            email: "nitin@example.com",
+            password: "12ka442ka1",
+        },
+        {
+            email: "user@example.com",
+            password: "thisispassword",
+        },
+    ];
+
     const validateUser = ({ email, password }) => {
-        if (email !== USER.email) return "Invalid email address.";
-        if (password !== USER.password) return "Invalid password.";
+        const user = USER.find((u) => u.email === email);
+
+        if (!user) return "Invalid email address.";
+        if (user.password !== password) return "Invalid password.";
+
         return null;
     };
 
