@@ -84,7 +84,7 @@ export default function TaskForm({ onClose, task }) {
                 />
 
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-2 px-1 md:px-1">
-                    <div id="priority" className="flex flex-col md:flex-row md:items-center gap-1 md:gap-1.5 w-full md:w-auto">
+                    <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-1.5 w-full md:w-auto">
                         <label htmlFor="priority" className="text-xs font-semibold uppercase text-[#86868B] dark:text-[#A1A1A6] whitespace-nowrap shrink-0">Priority</label>
                         <select
                             className="outline-none bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-lg px-2 py-1 w-full md:w-auto focus:ring-2 focus:ring-[#0066CC]/20 transition-all cursor-pointer"
@@ -101,7 +101,7 @@ export default function TaskForm({ onClose, task }) {
                         </select>
                     </div>
                     
-                    <div id="category" className="flex flex-col md:flex-row md:items-center gap-1 md:gap-1.5 w-full md:w-auto">
+                    <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-1.5 w-full md:w-auto">
                         <label htmlFor="category" className="text-xs font-semibold uppercase text-[#86868B] dark:text-[#A1A1A6] whitespace-nowrap shrink-0">Category</label>
                         <select
                             className="outline-none bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-lg px-2 py-1 w-full md:w-auto focus:ring-2 focus:ring-[#0066CC]/20 transition-all cursor-pointer"
@@ -117,7 +117,7 @@ export default function TaskForm({ onClose, task }) {
                         </select>
                     </div>
                     
-                    <div id="dueDate" className="flex flex-col md:flex-row md:items-center gap-1 md:gap-1.5 w-full md:w-auto">
+                    <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-1.5 w-full md:w-auto">
                         <label htmlFor="dueDate" className="text-xs font-semibold uppercase text-[#86868B] dark:text-[#A1A1A6] whitespace-nowrap shrink-0">Due Date</label>
                         <input
                             id="dueDate"

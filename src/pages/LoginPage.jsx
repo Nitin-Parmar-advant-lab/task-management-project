@@ -5,11 +5,12 @@ import { authActions } from "../store/authSlice";
 import { USER } from "../USER";
 
 export default function LoginPage() {
-    const [loginData, setLoginData] = useState({
+    const [form, setForm] = useState({
         email: "",
         password: "",
-        error: "",
     });
+
+    const [error, setError] = useState("");
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -19,35 +20,42 @@ export default function LoginPage() {
         return <Navigate to="/" />;
     }
 
-    function handleChange(e) {
+    const handleChange = (e) => {
         const { name, value } = e.target;
-        setLoginData((prev) => ({
+
+        setForm((prev) => ({
             ...prev,
             [name]: value,
-            error: "",
         }));
-    }
 
-    function handleSubmit(e) {
+        if (error) setError("");
+    };
+
+    const validateUser = ({ email, password }) => {
+        if (email !== USER.email) return "Invalid email address.";
+        if (password !== USER.password) return "Invalid password.";
+        return null;
+    };
+
+    const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (
-            loginData.email === USER.email &&
-            loginData.password === USER.password
-        ) {
-            const userId = crypto.randomUUID();
-            dispatch(authActions.login({ email: loginData.email, id: userId }));
-            navigate("/");
-        } else {
-            let errorMessage = "";
-            if (loginData.email !== USER.email) {
-                errorMessage = "Invalid email address.";
-            } else if (loginData.password !== USER.password) {
-                errorMessage = "Invalid password.";
-            }
-            setLoginData((prev) => ({ ...prev, error: errorMessage }));
+        const validationError = validateUser(form);
+
+        if (validationError) {
+            setError(validationError);
+            return;
         }
-    }
+
+        dispatch(
+            authActions.login({
+                email: form.email,
+                id: crypto.randomUUID(),
+            }),
+        );
+
+        navigate("/");
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#F5F5F7] dark:bg-[#000000] py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-500">
@@ -65,7 +73,7 @@ export default function LoginPage() {
                                 type="email"
                                 name="email"
                                 required
-                                value={loginData.email}
+                                value={form.email}
                                 onChange={handleChange}
                                 className="w-full px-4 py-3 bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] placeholder-[#A1A1A6] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl outline-none focus:ring-2 focus:ring-[#0066CC]/20 transition-all font-medium"
                                 placeholder="Email address"
@@ -76,7 +84,7 @@ export default function LoginPage() {
                                 type="password"
                                 name="password"
                                 required
-                                value={loginData.password}
+                                value={form.password}
                                 onChange={handleChange}
                                 className="w-full px-4 py-3 bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] placeholder-[#A1A1A6] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl outline-none focus:ring-2 focus:ring-[#0066CC]/20 transition-all font-medium"
                                 placeholder="Password"
@@ -84,9 +92,9 @@ export default function LoginPage() {
                         </div>
                     </div>
 
-                    {loginData.error && (
+                    {error && (
                         <div className="text-[#D70015] dark:text-[#FF453A] text-xs font-bold uppercase tracking-wide text-center">
-                            {loginData.error}
+                            {error}
                         </div>
                     )}
 

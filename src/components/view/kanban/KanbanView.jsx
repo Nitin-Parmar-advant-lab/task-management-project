@@ -1,6 +1,6 @@
 import KanbanColumn from "./KanbanColumn";
 import useFetchTask from "../../../hooks/useFetchTask";
-import { useState } from "react";
+import { useState, useRef, useMemo, useCallback } from "react";
 import Modal from "../../ui/Modal";
 import TaskForm from "../../TaskForm";
 import {
@@ -18,12 +18,26 @@ import TaskCard from "./TaskCard";
 export default function KanbanView() {
     const dispatch = useDispatch();
     const { todoTasks, inProgressTasks, completedTasks } = useFetchTask();
+
     const [selectedTask, setSelectedTask] = useState(null);
     const [activeId, setActiveId] = useState(null);
 
+    const lastOverCategory = useRef(null);
 
-    const allTasks = [...todoTasks, ...inProgressTasks, ...completedTasks];
-    const activeTask = allTasks.find((t) => t.id === activeId);
+    const taskMap = useMemo(() => {
+        const map = new Map();
+        [...todoTasks, ...inProgressTasks, ...completedTasks].forEach(
+            (task) => {
+                map.set(task.id, task);
+            },
+        );
+        return map;
+    }, [todoTasks, inProgressTasks, completedTasks]);
+
+    const activeTask = useMemo(
+        () => (activeId ? taskMap.get(activeId) : null),
+        [activeId, taskMap],
+    );
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -33,55 +47,56 @@ export default function KanbanView() {
         }),
     );
 
-    function onCardClick(task) {
+    const onCardClick = useCallback((task) => {
         setSelectedTask(task);
-    }
+    }, []);
 
-    function handleDragStart(event) {
+    const handleDragStart = useCallback((event) => {
         setActiveId(event.active.id);
-    }
+    }, []);
 
-    function handleDragOver(event) {
-        const { active, over } = event;
-        if (!over) return;
+    const handleDragOver = useCallback(
+        (event) => {
+            const { active, over } = event;
+            if (!over) return;
 
-        const taskId = active.id;
-        const overId = over.id;
+            const taskId = active.id;
+            const overId = over.id;
+            const overCategory = taskMap.get(overId)?.category || overId;
 
-        const currentTask = allTasks.find((task) => task.id === taskId);
+            const currentTask = taskMap.get(taskId);
+            if (!currentTask) return;
 
-        if (currentTask && currentTask.category !== overId) {
+            if (currentTask.category === overCategory) return;
+            if (lastOverCategory.current === overCategory) return;
+
+            if (!["Todo", "In Progress", "Completed"].includes(overCategory)) return;
+
+            lastOverCategory.current = overCategory;
+
             dispatch(
                 tasksAction.moveTask({
-                    taskId: taskId,
-                    newCategory: overId,
+                    taskId,
+                    newCategory: overCategory,
                 }),
             );
-        }
-    }
+        },
+        [dispatch, taskMap],
+    );
 
-    function handleDragEnd(event) {
+    const handleDragEnd = useCallback(() => {
         setActiveId(null);
+        lastOverCategory.current = null;
+    }, []);
 
-
-        const { active, over } = event;
-
-        if (!over) return;
-
-        const taskId = active.id;
-        const newCategory = over.id;
-
-        const currentTask = allTasks.find((task) => task.id === taskId);
-
-        if (currentTask && currentTask.category !== newCategory) {
-            dispatch(
-                tasksAction.moveTask({
-                    taskId: taskId,
-                    newCategory: newCategory,
-                }),
-            );
-        }
-    }
+    const columns = useMemo(
+        () => [
+            { id: "Todo", title: "Todo", tasks: todoTasks },
+            { id: "In Progress", title: "In Progress", tasks: inProgressTasks },
+            { id: "Completed", title: "Completed", tasks: completedTasks },
+        ],
+        [todoTasks, inProgressTasks, completedTasks],
+    );
 
     return (
         <DndContext
@@ -91,50 +106,31 @@ export default function KanbanView() {
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
         >
-            <div
-                id="kanban-view"
-                className="flex gap-6 px-5 h-full overflow-x-auto p-4 bg-[#F5F5F7] dark:bg-[#000000]"
-            >
-                <div id="todo-task" className="flex-1 min-w-75">
-                    <KanbanColumn
-                        id="Todo"
-                        title="Todo"
-                        tasks={todoTasks}
-                        onCardClick={onCardClick}
-                    />
-                </div>
-
-                <div id="in-progress-task" className="flex-1 min-w-75">
-                    <KanbanColumn
-                        id="In Progress"
-                        title="In Progress"
-                        tasks={inProgressTasks}
-                        onCardClick={onCardClick}
-                    />
-                </div>
-
-                <div id="completed-task" className="flex-1 min-w-75">
-                    <KanbanColumn
-                        id="Completed"
-                        title="Completed"
-                        tasks={completedTasks}
-                        onCardClick={onCardClick}
-                    />
-                </div>
+            <div className="flex gap-6 px-5 h-full overflow-x-auto p-4 bg-[#F5F5F7] dark:bg-[#000000]">
+                {columns.map((col) => (
+                    <div key={col.id} className="flex-1 min-w-75">
+                        <KanbanColumn
+                            id={col.id}
+                            title={col.title}
+                            tasks={col.tasks}
+                            onCardClick={onCardClick}
+                        />
+                    </div>
+                ))}
             </div>
 
             <DragOverlay>
-                {activeTask ? (
+                {activeTask && (
                     <div className="w-full">
                         <TaskCard task={activeTask} isOverlay={true} />
                     </div>
-                ) : null}
+                )}
             </DragOverlay>
 
             <Modal
                 isOpen={selectedTask}
                 onClose={() => setSelectedTask(null)}
-                modalWidth="min-w-2xl"
+                modalWidth="w-[95%] sm:w-[85%] md:w-[80%] lg:max-w-2xl"
             >
                 <TaskForm
                     key={selectedTask?.id || "new-task"}

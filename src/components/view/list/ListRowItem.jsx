@@ -34,7 +34,7 @@ export default function ListRowItem({ task, onCardClick }) {
                         <img
                             src={prioritySvg}
                             alt="Priority"
-                            className="w-4 dark:invert"
+                            className="w-3.5 dark:invert"
                         />
                     )}
                 </div>
@@ -45,26 +45,22 @@ export default function ListRowItem({ task, onCardClick }) {
             </div>
 
             <div className="text-[10px] md:text-xs text-[#A1A1A6] dark:text-[#6E6E73] md:text-center font-semibold">
-                {formattedDate ? (
+                {formattedDate && (
                     <>
-                        <span className="md:hidden opacity-50">DUE: </span>
+                        <span className="md:hidden opacity-90">DUE: </span>
                         {formattedDate}
                     </>
-                ) : (
-                    ""
                 )}
             </div>
 
 
             <div className="hidden md:flex justify-end pr-2">
-                {prioritySvg ? (
+                {prioritySvg && (
                     <img
                         src={prioritySvg}
                         alt="Priority"
                         className="w-4 dark:invert-75"
                     />
-                ) : (
-                    <span />
                 )}
             </div>
         </div>

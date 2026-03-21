@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { tasksAction } from "../store/taskSlice";
-import closeIcon from "../assets/close-taggle-icon.svg"
+import closeIcon from "../assets/close-taggle-icon.svg";
 
 const formatDateForInput = (dateString) => {
     if (!dateString) return "";
@@ -63,16 +63,30 @@ export default function DateRangeForm({ onClose }) {
                 Filter by Date
             </h3>
 
-            <img src={closeIcon} alt="close" onClick={onClose} className="absolute w-5 -top-2 -right-2 cursor-pointer dark:invert"/>
+            <img
+                src={closeIcon}
+                alt="close"
+                onClick={onClose}
+                className="absolute w-5 top-0 right-3 md:-top-2 md:-right-2 cursor-pointer dark:invert"
+            />
 
             <div className="flex w-full gap-4">
                 <div className="flex-1 flex flex-col gap-1.5 text-center">
-                    <label className="text-xs font-bold uppercase tracking-widest text-[#86868B] dark:text-[#A1A1A6]">Start</label>
+                    <label
+                        htmlFor="start-date"
+                        className="text-xs font-bold uppercase tracking-widest text-[#86868B] dark:text-[#A1A1A6]"
+                    >
+                        Start
+                    </label>
                     <input
                         type="date"
+                        id="start-date"
                         value={range.from}
                         onChange={(e) => {
-                            setRange((prev) => ({ ...prev, from: e.target.value }));
+                            setRange((prev) => ({
+                                ...prev,
+                                from: e.target.value,
+                            }));
                             if (e.target.value && range.to) setError("");
                         }}
                         className="bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl p-2 outline-none focus:ring-2 focus:ring-[#0066CC] transition-all font-medium text-sm"
@@ -80,13 +94,22 @@ export default function DateRangeForm({ onClose }) {
                 </div>
 
                 <div className="flex-1 flex flex-col gap-1.5 text-center">
-                    <label className="text-xs font-bold uppercase tracking-widest text-[#86868B] dark:text-[#A1A1A6]">End</label>
+                    <label
+                        htmlFor="end-date"
+                        className="text-xs font-bold uppercase tracking-widest text-[#86868B] dark:text-[#A1A1A6]"
+                    >
+                        End
+                    </label>
                     <input
                         type="date"
+                        id="end-date"
                         value={range.to}
-                        min={range.from} 
+                        min={range.from}
                         onChange={(e) => {
-                            setRange((prev) => ({ ...prev, to: e.target.value }));
+                            setRange((prev) => ({
+                                ...prev,
+                                to: e.target.value,
+                            }));
                             if (range.from && e.target.value) setError("");
                         }}
                         className="bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl p-2 outline-none focus:ring-2 focus:ring-[#0066CC] transition-all font-medium text-sm "
