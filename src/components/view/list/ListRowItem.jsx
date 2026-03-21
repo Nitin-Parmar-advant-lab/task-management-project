@@ -34,7 +34,7 @@ export default function ListRowItem({ task, onCardClick }) {
                         <img
                             src={prioritySvg}
                             alt="Priority"
-                            className="w-4 h-4"
+                            className="w-4 dark:invert"
                         />
                     )}
                 </div>
@@ -61,7 +61,7 @@ export default function ListRowItem({ task, onCardClick }) {
                     <img
                         src={prioritySvg}
                         alt="Priority"
-                        className="w-4 h-4 opacity-80"
+                        className="w-4 dark:invert-75"
                     />
                 ) : (
                     <span />

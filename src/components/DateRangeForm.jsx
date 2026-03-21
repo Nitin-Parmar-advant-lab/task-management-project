@@ -63,7 +63,7 @@ export default function DateRangeForm({ onClose }) {
                 Filter by Date
             </h3>
 
-            <img src={closeIcon} alt="close" onClick={onClose} className="absolute w-5 -top-2 -right-2 cursor-pointer"/>
+            <img src={closeIcon} alt="close" onClick={onClose} className="absolute w-5 -top-2 -right-2 cursor-pointer dark:invert"/>
 
             <div className="flex w-full gap-4">
                 <div className="flex-1 flex flex-col gap-1.5 text-center">
@@ -89,7 +89,7 @@ export default function DateRangeForm({ onClose }) {
                             setRange((prev) => ({ ...prev, to: e.target.value }));
                             if (range.from && e.target.value) setError("");
                         }}
-                        className="bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl p-2 outline-none focus:ring-2 focus:ring-[#0066CC] transition-all font-medium text-sm"
+                        className="bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl p-2 outline-none focus:ring-2 focus:ring-[#0066CC] transition-all font-medium text-sm "
                     />
                 </div>
             </div>
@@ -101,12 +101,6 @@ export default function DateRangeForm({ onClose }) {
             )}
 
             <div className="flex flex-row justify-between w-full gap-3 mt-4">
-                {/* <button
-                    onClick={onClose}
-                    className="flex-1 py-3 px-4 bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl font-bold text-sm tracking-tight cursor-pointer hover:bg-[#E8E8ED] dark:hover:bg-[#2D2D2F] transition-all shadow-sm "
-                >
-                    Cancel
-                </button> */}
                 <button
                     onClick={handleReset}
                     className="flex-1 py-3 px-4 bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl font-bold text-sm tracking-tight cursor-pointer hover:bg-[#E8E8ED] dark:hover:bg-[#2D2D2F] transition-all shadow-sm "

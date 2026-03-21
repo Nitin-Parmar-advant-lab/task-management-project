@@ -31,7 +31,7 @@ export default function TopBar({
                 <div className="w-full lg:w-auto flex justify-center text-xs lg:justify-end lg:mt-0 pl-4 mt-2">
                     <Button
                         text={`${projectTitle} project`}
-                        style="px-4 py-1 whitespace-nowrap shadow-sm lg:mr-5 lg:block "
+                        style="px-4 py-1.5 whitespace-nowrap shadow-sm lg:mr-5 lg:block "
                     />
                 </div>
             </div>

@@ -56,7 +56,7 @@ export default function TaskCard({ task, onCardClick, isOverlay }) {
                     <img
                         src={prioritySvg}
                         alt={`${task.priority} Priority`}
-                        className="w-4 dark:invert dark:brightness-0 "
+                        className="w-4 dark:invert"
                     />
                 ) : (
                     <span />
