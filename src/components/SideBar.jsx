@@ -39,7 +39,7 @@ export default function SideBar({ onAddProject }) {
                         <img
                             src={closeToggleIcon}
                             alt="close sidebar"
-                            className="w-5 h-5 opacity-70"
+                            className="w-5 h-5 opacity-70 dark:invert"
                         />
                     </button>
                 </div>
