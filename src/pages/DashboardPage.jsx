@@ -18,7 +18,6 @@ export default function DashboardPage() {
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
     const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
 
-
     const selectedProjectId = useSelector(
         (state) => state.tasks.selectedProjectId,
     );
@@ -28,16 +27,14 @@ export default function DashboardPage() {
     function handleCreateTaskModal() {
         setIsTaskModalOpen((prevs) => !prevs);
     }
-    
+
     if (!isVerified) {
         return <Navigate to="/login" />;
     }
 
     return (
         <div className="flex h-screen overflow-hidden bg-[#F5F5F7] dark:bg-[#000000]">
-            <SideBar
-                onAddProject={() => setIsProjectModalOpen(true)}
-            />
+            <SideBar onAddProject={() => setIsProjectModalOpen(true)} />
             <Modal
                 isOpen={isProjectModalOpen}
                 onClose={() => setIsProjectModalOpen(false)}
@@ -53,13 +50,17 @@ export default function DashboardPage() {
                 <TopBar
                     setCreateTaskModal={handleCreateTaskModal}
                     currentView={view}
-                    onViewChange={(newView) => dispatch(uiActions.setView(newView))}
+                    onViewChange={(newView) =>
+                        dispatch(uiActions.setView(newView))
+                    }
                     projectTitle={selectedProject?.title || "Select a Project"}
                 />
 
-                <div className="flex-1 overflow-y-auto ">
-                    {view === "kanban" ? <KanbanView /> : <ListView />}
-                </div>
+                {
+                    <div className="flex-1 overflow-y-auto ">
+                        {view === "kanban" ? <KanbanView /> : <ListView />}
+                    </div>
+                }
 
                 <Modal
                     isOpen={isTaskModalOpen}

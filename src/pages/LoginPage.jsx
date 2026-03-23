@@ -84,6 +84,7 @@ export default function LoginPage() {
                     <div className="space-y-4">
                         <div className="group">
                             <input
+                                id="login-email"
                                 type="email"
                                 name="email"
                                 required
@@ -95,6 +96,7 @@ export default function LoginPage() {
                         </div>
                         <div className="group">
                             <input
+                                id="login-password"
                                 type="password"
                                 name="password"
                                 required

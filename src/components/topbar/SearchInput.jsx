@@ -17,6 +17,8 @@ export default function SearchInput() {
 
     return (
         <input
+            id="search-tasks"
+            name="search"
             type="text"
             placeholder="Search title"
             value={searchTerm}

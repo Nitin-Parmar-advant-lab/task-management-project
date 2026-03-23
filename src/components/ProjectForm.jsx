@@ -28,6 +28,7 @@ export default function ProjectForm({ onClose }) {
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
                     <input
+                        id="project-title"
                         type="text"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
