@@ -87,7 +87,7 @@ export default function ProjectList() {
                         ))}
                     </ul>
                 ) : (
-                    <p className="text-center text-gray-500 dark:text-gray-400 flex justify-center items-center h-full">
+                    <p className="text-center text-gray-500 dark:text-gray-400 flex justify-center items-center pt-20">
                         Create new project
                     </p>
                 )}
