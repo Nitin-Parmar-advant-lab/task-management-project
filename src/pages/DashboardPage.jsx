@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import SideBar from "../components/SideBar";
@@ -9,18 +9,32 @@ import Modal from "../components/ui/Modal";
 import TaskForm from "../components/TaskForm";
 import ProjectForm from "../components/ProjectForm";
 import { uiActions } from "../store/uiSlice";
+import { tasksAction } from "../store/taskSlice";
 
 export default function DashboardPage() {
+    const dispatch = useDispatch();
+
     const isVerified = useSelector((state) => state.auth.isVerified);
     const view = useSelector((state) => state.ui.view);
-    const dispatch = useDispatch();
+    const selectedProjectId = useSelector(
+        (state) => state.tasks.selectedProjectId,
+    );
+
+    const user = useSelector((state) => state.auth.user);
 
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
     const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
 
-    const selectedProjectId = useSelector(
-        (state) => state.tasks.selectedProjectId,
-    );
+    useEffect(() => {
+        if (isVerified && user && user.id) {
+            const storedData = localStorage.getItem(`projects_${user.id}`);
+
+            const userProjects = storedData ? JSON.parse(storedData) : [];
+
+            dispatch(tasksAction.loadUserData({ projects: userProjects }));
+        }
+    }, [isVerified, user, dispatch]);
+
     const projects = useSelector((state) => state.tasks.projects);
     const selectedProject = projects.find((p) => p.id === selectedProjectId);
 

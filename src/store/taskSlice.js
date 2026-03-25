@@ -1,13 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const saveProjectsToLocal = (projects) => {
+    const userId = localStorage.getItem("currentUserId");
+    if (userId) {
+        localStorage.setItem(userId, JSON.stringify(projects));
+    }
+};
+
 const taskSlice = createSlice({
     name: "tasks",
     initialState: {
-        projects: JSON.parse(localStorage.getItem("projects")) || [
-            { id: "p1", title: "Web D", tasks: [] },
-            { id: "p2", title: "Learning", tasks: [] },
-        ],
-        selectedProjectId: "p1",
+        projects: [],
+        selectedProjectId: null,
         sortBy: "createdAt",
         filter: {
             category: "all",
@@ -20,7 +24,7 @@ const taskSlice = createSlice({
     reducers: {
         addProject(state, action) {
             state.projects.push({ ...action.payload, tasks: [] });
-            localStorage.setItem("projects", JSON.stringify(state.projects));
+            saveProjectsToLocal(state.projects);
         },
 
         selectProject(state, action) {
@@ -34,14 +38,17 @@ const taskSlice = createSlice({
             if (state.selectedProjectId === action.payload) {
                 state.selectedProjectId = state.projects[0]?.id || null;
             }
-            localStorage.setItem("projects", JSON.stringify(state.projects));
+            saveProjectsToLocal(state.projects);
         },
 
         addTask(state, action) {
             state.projects
                 .find((project) => project.id === state.selectedProjectId)
-                .tasks.push({ ...action.payload, createdAt: new Date().toISOString() });
-            localStorage.setItem("projects", JSON.stringify(state.projects));
+                .tasks.push({
+                    ...action.payload,
+                    createdAt: new Date().toISOString(),
+                });
+            saveProjectsToLocal(state.projects);
         },
 
         updateTask(state, action) {
@@ -57,7 +64,7 @@ const taskSlice = createSlice({
                     project.tasks[taskIndex] = updatedTask;
                 }
             }
-            localStorage.setItem("projects", JSON.stringify(state.projects));
+            saveProjectsToLocal(state.projects);
         },
 
         setSort(state, action) {
@@ -83,7 +90,11 @@ const taskSlice = createSlice({
                     task.category = newCategory;
                 }
             }
-            localStorage.setItem("projects", JSON.stringify(state.projects));
+            saveProjectsToLocal(state.projects);
+        },
+        loadUserData(state, action) {
+            state.projects = action.payload.projects || [];
+            state.selectedProjectId = state.projects[0]?.id || null;
         },
     },
 });

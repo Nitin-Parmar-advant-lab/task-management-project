@@ -14,12 +14,14 @@ const authSlice = createSlice({
             state.user = action.payload;
             localStorage.setItem("isVerified", "true");
             localStorage.setItem("user", JSON.stringify(action.payload));
+            localStorage.setItem("currentUserId", action.payload.id);
         },
         logout(state) {
             state.isVerified = false;
             state.user = null;
             localStorage.removeItem("isVerified");
             localStorage.removeItem("user");
+            localStorage.removeItem("currentUserId");
         },
     },
 });

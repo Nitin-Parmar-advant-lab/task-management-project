@@ -1,94 +1,77 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Navigate, Link } from "react-router-dom";
+import { Link } from "react-router";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { authActions } from "../store/authSlice";
-import { USER } from "../USER";
 
-export default function LoginPage() {
+export default function SignupPage() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [form, setForm] = useState({
+        name: "",
         email: "",
         password: "",
     });
-
-    const [error, setError] = useState("");
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const isVerified = useSelector((state) => state.auth.isVerified);
-
-    if (isVerified) {
-        return <Navigate to="/" />;
-    }
+    const [error, setError] = useState(null);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-
         setForm((prev) => ({
             ...prev,
-            [name]: value,
+            [e.target.name]: e.target.value,
         }));
-
-        if (error) setError("");
-    };
-
-    const validateUser = ({ email, password }) => {
-        // const user = USER.find((u) => u.email === email);
-
-        // if (!user) return "Invalid email address.";
-        // if (user.password !== password) return "Invalid password.";
-
-        // return null;
-
-        const registeredUsers =
-            JSON.parse(localStorage.getItem("registeredUsers")) || [];
-
-        const user = registeredUsers.find((u) => u.email === email);
-
-        if (!user)
-            return { error: "Invalid email address.", validatedUser: null };
-        if (user.password !== password)
-            return { error: "Invalid password.", validatedUser: null };
-        return { error: null, validatedUser: user };
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setError(null);
 
-        const { error: validationError, validatedUser } = validateUser(form);
+        const existingUsers =
+            JSON.parse(localStorage.getItem("registeredUsers")) || [];
 
-        if (validationError) {
-            setError(validationError);
+        const emailExists = existingUsers.some((u) => u.email === form.email);
+        if (emailExists) {
+            setError("Email already exists");
             return;
         }
 
+        const newUser = {
+            id: crypto.randomUUID(),
+            name: form.name,
+            email: form.email,
+            password: form.password,
+        };
+
+        existingUsers.push(newUser);
+        localStorage.setItem("registeredUsers", JSON.stringify(existingUsers));
+
         dispatch(
             authActions.login({
-                email: validatedUser.email,
-                id: validatedUser.id || crypto.randomUUID(),
-                name: validatedUser.name,
+                id: newUser.id,
+                email: newUser.email,
+                name: newUser.name,
             }),
         );
-
         navigate("/");
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#F5F5F7] dark:bg-[#000000] py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-500">
-            <div className="max-w-md w-full space-y-6 p-8 bg-[#FFFFFF] dark:bg-[#161617] rounded-3xl shadow-2xl border border-[#E8E8ED] dark:border-[#2D2D2F]">
+            <div className="max-w-md w-full space-y-8 p-8 bg-[#FFFFFF] dark:bg-[#161617] rounded-3xl shadow-2xl border border-[#E8E8ED] dark:border-[#2D2D2F]">
                 <div>
                     <h2 className="text-center text-3xl font-bold text-[#1D1D1F] dark:text-[#F5F5F7] tracking-tight">
-                        Sign in
+                        Sign Up
                     </h2>
                 </div>
 
                 <div className="text-center text-sm">
                     <p className="text-[#1D1D1F] dark:text-[#F5F5F7] font-medium">
-                        Don't have an account?{" "}
+                        Already have an account?{" "}
                         <Link
-                            to="/signup"
+                            to="/login"
                             className="text-[#0066CC] dark:text-[#2997FF] font-bold hover:underline"
                         >
-                            Sign up
+                            Login
                         </Link>
                     </p>
                 </div>
@@ -97,7 +80,19 @@ export default function LoginPage() {
                     <div className="space-y-4">
                         <div className="group">
                             <input
-                                id="login-email"
+                                id="signup-name"
+                                type="text"
+                                name="name"
+                                required
+                                value={form.name}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 bg-[#F5F5F7] dark:bg-[#1D1D1F] border border-[#E8E8ED] dark:border-[#2D2D2F] placeholder-[#A1A1A6] text-[#1D1D1F] dark:text-[#F5F5F7] rounded-xl outline-none focus:ring-2 focus:ring-[#0066CC]/20 transition-all font-medium"
+                                placeholder="Name"
+                            />
+                        </div>
+                        <div className="group">
+                            <input
+                                id="signup-email"
                                 type="email"
                                 name="email"
                                 required
@@ -109,7 +104,7 @@ export default function LoginPage() {
                         </div>
                         <div className="group">
                             <input
-                                id="login-password"
+                                id="signup-password"
                                 type="password"
                                 name="password"
                                 required
@@ -132,7 +127,7 @@ export default function LoginPage() {
                             type="submit"
                             className="w-full flex justify-center py-3 px-4 text-sm font-bold rounded-xl text-white bg-[#0066CC] hover:bg-[#0071E3] dark:bg-[#2997FF] dark:hover:bg-[#5AC8FA] transition-all shadow-lg cursor-pointer"
                         >
-                            Login
+                            Sign Up
                         </button>
                     </div>
                 </form>
