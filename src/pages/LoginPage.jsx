@@ -39,10 +39,9 @@ export default function LoginPage() {
 
         // return null;
 
-        const registeredUsers =
-            JSON.parse(localStorage.getItem("registeredUsers")) || [];
-
-        const user = registeredUsers.find((u) => u.email === email);
+        const registeredUsers = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+        const allUsers = [...USER, ...registeredUsers];
+        const user = allUsers.find((u) => u.email === email);
 
         if (!user)
             return { error: "Invalid email address.", validatedUser: null };

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const saveProjectsToLocal = (projects) => {
     const userId = localStorage.getItem("currentUserId");
     if (userId) {
-        localStorage.setItem(userId, JSON.stringify(projects));
+        localStorage.setItem(`projects_${userId}`, JSON.stringify(projects));
     }
 };
 
